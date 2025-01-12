@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    double d = 9.7;
+    int i = static_cast<int>(d); 
+    cout << "Double: " << d << "\n";
+    cout << "Converted to int: " << i << "\n";
+
+    int num = 65;
+    char c = static_cast<char>(num);
+    cout << "Int: " << num << "\n";
+    cout << "Converted to char: " << c << "\n";
+
+    return 0;
+}
+
+#include <iostream>
+#include <memory>
+using namespace std;
+
+int main() {
+    unique_ptr<int> ptr = make_unique<int>(42);
+    cout << "Value: " << *ptr << "\n";
+
+    return 0;
+}

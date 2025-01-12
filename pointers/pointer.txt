@@ -1,0 +1,98 @@
+//mark
+
+#include <iostream>
+using namespace std;
+
+void bubbleSort(int *arr, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - 1 - i; j++) {
+            if (*(arr + j) > *(arr + j + 1)) {
+                int temp = *(arr + j);
+                *(arr + j) = *(arr + j + 1);
+                *(arr + j + 1) = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int *marks = new int[10];
+    
+   
+    cout << "Enter marks for 10 students:\n";
+    for (int i = 0; i < 10; i++) {
+        cin >> *(marks + i);
+    }
+    
+   
+    cout << "Size allocated: " << sizeof(int) * 10 << " bytes\n";
+    
+  
+    int *sorted = new int[10];
+    for (int i = 0; i < 10; i++) {
+        *(sorted + i) = *(marks + i);
+    }
+    
+    bubbleSort(sorted, 10);
+    
+    cout << "Sorted array:\n";
+    for (int i = 0; i < 10; i++) {
+        cout << *(sorted + i) << " ";
+    }
+    
+    delete[] marks;
+    delete[] sorted;
+    return 0;
+}
+
+//2
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int *arr = new int[10];
+    
+  
+    cout << "Enter 10 values:\n";
+    for (int i = 0; i < 10; i++) {
+        cin >> *(arr + i);
+    }
+    
+  
+    cout << "Values in reverse order:\n";
+    for (int i = 9; i >= 0; i--) {
+        cout << *(arr + i) << " ";
+    }
+    
+    delete[] arr;
+    return 0;
+}
+
+//3
+
+#include <iostream>
+using namespace std;
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        cout << "Usage: " << argv[0] << " <int1> <int2>\n";
+        return 1;
+    }
+    
+    int a = atoi(argv[1]);
+    int b = atoi(argv[2]);
+    
+    cout << "Before swapping: a = " << a << "  b = " << b << "\n";
+    swap(&a, &b);
+    cout << "After swapping: a = " << a << "  b = " << b << "\n";
+    
+    return 0;
+}
+
