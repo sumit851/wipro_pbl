@@ -1,0 +1,75 @@
+//1
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class Point {
+private:
+    int x, y;
+public:
+    Point() : x(0), y(0) {} 
+    Point(int x, int y) : x(x), y(y) {}  
+    Point(const Point& p) : x(p.x), y(p.y) {}  
+};
+
+
+class Queue {
+private:
+    int* data;
+    int size;
+public:
+    Queue() : data(nullptr), size(0) {  
+        data = new int[size];
+    }
+    ~Queue() { 
+        delete[] data;
+    }
+};
+
+
+class Employee {
+private:
+    string name;
+    int id;
+    const int dept_id; 
+    int& team_size;    
+public:
+    Employee(string n, int i, int d, int& t) 
+        : name(n), id(i), dept_id(d), team_size(t) {}
+};
+
+
+class Date {
+public:
+    Date() {}
+    Date(const Date& d) {  }
+};
+
+
+Date CopyDate(Date d) {  
+    Date d1 = d;         
+    return d1;           
+}
+
+
+class Sample {
+private:
+    int x;
+    double y;
+public:
+    Sample() : x(0), y(0) {} 
+    Sample(int a, int b) : x(a), y(b) {} 
+    Sample(int a, double b) : x(a), y(b) {} 
+};
+
+int main() {
+   
+    Point p1;           
+    Point p2(1, 2);    
+    Point p3 = p2;     
+    
+    return 0;
+}
+
+//2

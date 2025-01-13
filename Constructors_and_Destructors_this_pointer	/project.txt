@@ -1,0 +1,239 @@
+#include <iostream>
+using namespace std;
+
+class Queue {
+private:
+    int* arr;
+    int front;
+    int rear;
+    int capacity;
+    int size;
+
+public:
+  
+    Queue(int cap = 10) {
+        capacity = cap;
+        arr = new int[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+
+    
+    ~Queue() {
+        delete[] arr;
+    }
+
+  
+    void add(int element) {
+        if (size == capacity) {
+            cout << "Queue is full" << endl;
+            return;
+        }
+        rear = (rear + 1) % capacity;
+        arr[rear] = element;
+        size++;
+    }
+
+   
+    int remove() {
+        if (isEmpty()) {
+            cout << "Queue is empty" << endl;
+            return -1;
+        }
+        int element = arr[front];
+        front = (front + 1) % capacity;
+        size--;
+        return element;
+    }
+
+   
+    int getFront() {
+        if (isEmpty()) {
+            cout << "Queue is empty" << endl;
+            return -1;
+        }
+        return arr[front];
+    }
+
+   
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty" << endl;
+            return;
+        }
+        cout << "Queue elements: ";
+        int count = 0;
+        int index = front;
+        while (count < size) {
+            cout << arr[index] << " ";
+            index = (index + 1) % capacity;
+            count++;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Queue q;
+    char choice;
+    int element;
+
+    while (true) {
+        cout << "\nQueue Operations Menu:\n";
+        cout << "A - Add element\n";
+        cout << "R - Remove element\n";
+        cout << "F - Get front element\n";
+        cout << "D - Display queue\n";
+        cout << "Q - Quit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (toupper(choice)) {
+            case 'A':
+                cout << "Enter element to add: ";
+                cin >> element;
+                q.add(element);
+                break;
+            case 'R':
+                element = q.remove();
+                if (element != -1)
+                    cout << "Removed element: " << element << endl;
+                break;
+            case 'F':
+                element = q.getFront();
+                if (element != -1)
+                    cout << "Front element: " << element << endl;
+                break;
+            case 'D':
+                q.display();
+                break;
+            case 'Q':
+                cout << "Exiting program\n";
+                return 0;
+            default:
+                cout << "Invalid choice!\n";
+        }
+    }
+    return 0;
+}
+
+
+//bitset
+
+#include <iostream>
+using namespace std;
+
+class BitSet {
+private:
+    int bits;  
+
+public:
+    
+    BitSet() {
+        bits = 0;
+    }
+
+   
+    void setBit(int idx) {
+        if(idx >= 0 && idx < 32) {
+            bits |= (1 << idx);
+        }
+    }
+
+    
+    void setBit(int idx, int value) {
+        if(idx >= 0 && idx < 32) {
+            if(value == 1) {
+                setBit(idx);
+            } else {
+                clearBit(idx);
+            }
+        }
+    }
+
+    
+    void clearBit(int idx) {
+        if(idx >= 0 && idx < 32) {
+            bits &= ~(1 << idx);
+        }
+    }
+
+    
+    void toggleBit(int idx) {
+        if(idx >= 0 && idx < 32) {
+            bits ^= (1 << idx);
+        }
+    }
+
+  
+    int getBit(int idx) {
+        if(idx >= 0 && idx < 32) {
+            return (bits & (1 << idx)) ? 1 : 0;
+        }
+        return 0;
+    }
+
+    
+    void print() {
+        for(int i = 31; i >= 0; i--) {
+            cout << getBit(i);
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    BitSet bs;
+    char choice;
+    int idx, value;
+
+    while(true) {
+        cout << "\nBitSet Operations Menu:\n";
+        cout << "S - Set bit\n";
+        cout << "C - Clear bit\n";
+        cout << "T - Toggle bit\n";
+        cout << "G - Get bit\n";
+        cout << "P - Print all bits\n";
+        cout << "Q - Quit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch(toupper(choice)) {
+            case 'S':
+                cout << "Enter index and value (0/1): ";
+                cin >> idx >> value;
+                bs.setBit(idx, value);
+                break;
+            case 'C':
+                cout << "Enter index: ";
+                cin >> idx;
+                bs.clearBit(idx);
+                break;
+            case 'T':
+                cout << "Enter index: ";
+                cin >> idx;
+                bs.toggleBit(idx);
+                break;
+            case 'G':
+                cout << "Enter index: ";
+                cin >> idx;
+                cout << "Bit value: " << bs.getBit(idx) << endl;
+                break;
+            case 'P':
+                bs.print();
+                break;
+            case 'Q':
+                cout << "Exiting program\n";
+                return 0;
+            default:
+                cout << "Invalid choice!\n";
+        }
+    }
+    return 0;
+}
