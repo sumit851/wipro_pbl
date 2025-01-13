@@ -1,0 +1,114 @@
+#include <iostream>
+using namespace std;
+
+class Time {
+public:
+    
+    Time() {
+        hrs = mins = secs = 0;
+    }
+    
+    
+    int getHours() { return hrs; }
+    int getMins() { return mins; }
+    int getSecs() { return secs; }
+  
+    void setHours(int h) { hrs = h; }
+    void setMins(int m) { mins = m; }
+    void setSecs(int s) { secs = s; }
+  
+    Time difference(Time t2) {
+        Time diff;
+        int totalSecs1 = hrs * 3600 + mins * 60 + secs;
+        int totalSecs2 = t2.hrs * 3600 + t2.mins * 60 + t2.secs;
+        int diffSecs = abs(totalSecs1 - totalSecs2);
+        
+        diff.hrs = diffSecs / 3600;
+        diffSecs %= 3600;
+        diff.mins = diffSecs / 60;
+        diff.secs = diffSecs % 60;
+        
+        return diff;
+    }
+    
+   
+    int compare(Time t2) {
+        int totalSecs1 = hrs * 3600 + mins * 60 + secs;
+        int totalSecs2 = t2.hrs * 3600 + t2.mins * 60 + t2.secs;
+        
+        if (totalSecs1 < totalSecs2) return -1;
+        if (totalSecs1 > totalSecs2) return 1;
+        return 0;
+    }
+    
+  
+    void display() {
+        cout << hrs << ":" << mins << ":" << secs << endl;
+    }
+
+private:
+    int hrs, mins, secs;
+};
+
+int main() {
+    Time t1, t2;
+    char choice;
+    
+    do {
+        cout << "\nTime Operations Menu:\n";
+        cout << "S - Set time\n";
+        cout << "D - Display time\n";
+        cout << "C - Compare times\n";
+        cout << "F - Find difference\n";
+        cout << "Q - Quit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        switch(toupper(choice)) {
+            case 'S': {
+                int h, m, s;
+                cout << "Enter hours, minutes, seconds: ";
+                cin >> h >> m >> s;
+                t1.setHours(h);
+                t1.setMins(m);
+                t1.setSecs(s);
+                break;
+            }
+            case 'D':
+                t1.display();
+                break;
+            case 'C': {
+                cout << "Enter second time (hours minutes seconds): ";
+                int h, m, s;
+                cin >> h >> m >> s;
+                t2.setHours(h);
+                t2.setMins(m);
+                t2.setSecs(s);
+                int result = t1.compare(t2);
+                if (result < 0) cout << "First time is earlier\n";
+                else if (result > 0) cout << "First time is later\n";
+                else cout << "Times are equal\n";
+                break;
+            }
+            case 'F': {
+                cout << "Enter second time (hours minutes seconds): ";
+                int h, m, s;
+                cin >> h >> m >> s;
+                t2.setHours(h);
+                t2.setMins(m);
+                t2.setSecs(s);
+                Time diff = t1.difference(t2);
+                cout << "Time difference is: ";
+                diff.display();
+                break;
+            }
+            case 'Q':
+                cout << "Exiting program\n";
+                break;
+            default:
+                cout << "Invalid choice!\n";
+        }
+    } while(toupper(choice) != 'Q');
+    
+    return 0;
+}
