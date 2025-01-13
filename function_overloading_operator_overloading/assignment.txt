@@ -1,0 +1,169 @@
+#include <iostream>
+using namespace std;
+
+
+void swap(float &a, float &b) {
+    float temp = a;
+    a = b;
+    b = temp;
+}
+
+
+void swap(double &a, double &b) {
+    double temp = a;
+    a = b;
+    b = temp;
+}
+
+
+void swap(long &a, long &b) {
+    long temp = a;
+    a = b;
+    b = temp;
+}
+
+int main() {
+  
+    float f1 = 3.14f, f2 = 6.28f;
+    cout << "Before swapping floats: f1 = " << f1 << ", f2 = " << f2 << endl;
+    swap(f1, f2);
+    cout << "After swapping floats: f1 = " << f1 << ", f2 = " << f2 << "\n\n";
+
+  
+    double d1 = 2.718, d2 = 3.14159;
+    cout << "Before swapping doubles: d1 = " << d1 << ", d2 = " << d2 << endl;
+    swap(d1, d2);
+    cout << "After swapping doubles: d1 = " << d1 << ", d2 = " << d2 << "\n\n";
+
+    
+    long l1 = 100000L, l2 = 200000L;
+    cout << "Before swapping longs: l1 = " << l1 << ", l2 = " << l2 << endl;
+    swap(l1, l2);
+    cout << "After swapping longs: l1 = " << l1 << ", l2 = " << l2 << endl;
+
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+class Date {
+public:
+    Date() : day(0), mth(0), year(0) { }
+    Date(int d, int m, int y) : day(d), mth(m), year(y) { }
+
+  
+    Date operator+(int n) {
+        Date temp = *this;
+        temp.day += n;
+   
+        return temp;
+    }
+
+    
+    Date operator-(int n) {
+        Date temp = *this;
+        temp.day -= n;
+      
+        return temp;
+    }
+
+    void display() const {
+        cout << day << "/" << mth << "/" << year;
+    }
+
+private:
+    int day;
+    int mth;
+    int year;
+};
+
+int main(){
+    Date today(25, 12, 2011);
+    Date tomorrow = today + 1;
+    Date yesterday = today - 1;
+
+    cout << "Today: ";
+    today.display();
+    cout << endl;
+
+    cout << "Tomorrow: ";
+    tomorrow.display();
+    cout << endl;
+
+    cout << "Yesterday: ";
+    yesterday.display();
+    cout << endl;
+
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+class Date {
+public:
+    Date() : day(0), mth(0), year(0) { }
+    Date(int d, int m, int y) : day(d), mth(m), year(y) { }
+
+    
+    Date& operator++() {
+        ++day;
+        return *this;
+    }
+
+   
+    Date operator++(int) {
+        Date temp = *this;
+        day++;
+        return temp;
+    }
+
+   
+    Date& operator--() {
+        --day;
+        return *this;
+    }
+
+    
+    Date operator--(int) {
+        Date temp = *this;
+        day--;
+        return temp;
+    }
+
+    void display() const {
+        cout << day << "/" << mth << "/" << year;
+    }
+
+private:
+    int day;
+    int mth;
+    int year;
+};
+
+
+int main(){
+    Date date(1, 1, 2020);
+    cout << "Original date: ";
+    date.display();
+    cout << endl;
+
+    cout << "Prefix increment: ";
+    (++date).display();
+    cout << endl;
+
+    cout << "Postfix increment: ";
+    (date++).display();
+    cout << endl;
+
+    cout << "Prefix decrement: ";
+    (--date).display();
+    cout << endl;
+
+    cout << "Postfix decrement: ";
+    (date--).display();
+    cout << endl;
+
+    return 0;
+}
