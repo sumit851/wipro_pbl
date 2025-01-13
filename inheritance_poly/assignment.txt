@@ -1,0 +1,62 @@
+Number
+├── Integer
+└── FloatingPoint
+    ├── Fixed
+    └── Scientific
+
+    Animal
+└── Domestic
+    └── Dog
+        └── Dalmatian
+
+
+        Furniture
+└── Table
+    ├── DiningTable
+    ├── RoundShapedTable
+    └── RectangleShapedTable
+
+    StorageDevices
+├── Floppy
+├── CD
+└── MemoryStick
+
+class Base {
+public:
+    void pub_base_fun();
+protected:
+    int prot_var;
+    void prot_base_fun();
+private:
+    int priv_base_var;
+};
+
+class Der1 : public Base {
+public:
+    void pub_der1_fun();
+protected:
+    int prot_var;
+    void prot_der1_fun();
+private:
+    int priv_der1_var;
+};
+
+class Der2 : public Base {
+public:
+    void pub_der2_fun();
+protected:
+    int prot_var;
+    void prot_der2_fun();
+private:
+    int priv_der2_var;
+};
+
+int main(){
+    Base *b;
+    Der1 d1;
+    Der2 d2;
+    b->pub_base_fun();
+    d1.pub_der1_fun();
+    d2.pub_der2_fun();
+    return 0;
+}
