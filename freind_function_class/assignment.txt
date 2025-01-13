@@ -1,0 +1,97 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+
+class Date {
+private:
+    int day, month, year;
+    
+public:
+    Date(int d=1, int m=1, int y=2024) : day(d), month(m), year(y) {}
+    
+    friend Date operator+(const Date& d, int days);
+    
+    void display() {
+        cout << day << "/" << month << "/" << year << endl;
+    }
+};
+
+Date operator+(const Date& d, int days) {
+    Date temp = d;
+    temp.day += days;
+    
+    return temp;
+}
+
+
+class String {
+private:
+    char* str;
+    
+public:
+    String(const char* s = "") {
+        str = new char[strlen(s) + 1];
+        strcpy(str, s);
+    }
+    
+    friend String operator+(const String& s1, const char* s2);
+    friend String operator+(const char* s1, const String& s2);
+    
+    void display() {
+        cout << str << endl;
+    }
+    
+    ~String() {
+        delete[] str;
+    }
+};
+
+String operator+(const String& s1, const char* s2) {
+    String temp;
+    temp.str = new char[strlen(s1.str) + strlen(s2) + 1];
+    strcpy(temp.str, s1.str);
+    strcat(temp.str, s2);
+    return temp;
+}
+
+String operator+(const char* s1, const String& s2) {
+    String temp;
+    temp.str = new char[strlen(s1) + strlen(s2.str) + 1];
+    strcpy(temp.str, s1);
+    strcat(temp.str, s2.str);
+    return temp;
+}
+
+class XYZ {
+private:
+    int a;
+public:
+    XYZ(int a = 10) { this->a = a; }
+    friend void test(XYZ& obj);
+};
+
+void test(XYZ& obj) {
+    obj.a = 12;  
+    cout << obj.a << endl;
+}
+
+int main() {
+  
+    Date d1(1, 1, 2024);
+    Date d2 = d1 + 1;
+    d2.display();
+    
+    
+    String s1("Hello ");
+    String s2 = s1 + "World";
+    String s3 = "Hello " + s1;
+    s2.display();
+    s3.display();
+    
+  
+    XYZ obj(20);
+    test(obj);
+    
+    return 0;
+}

@@ -1,0 +1,48 @@
+#include <iostream>
+
+using namespace std;
+
+class Int {
+private:
+    int a;
+
+public:
+    Int() : a(0) {}
+    Int(int a) : a(a) {}
+    Int(const Int &b) : a(b.a) {}
+
+    Int operator+(const Int &b) const {
+        return Int(this->a + b.a);
+    }
+
+    Int operator-(const Int &b) const {
+        return Int(this->a - b.a);
+    }
+
+    Int operator*(const Int &b) const {
+        return Int(this->a * b.a);
+    }
+
+    Int operator/(const Int &b) const {
+        return Int(this->a / b.a);
+    }
+
+    void print() const {
+        cout << this->a << endl;
+    }
+};
+
+int main(){
+    Int a(5);
+    Int b(3);
+    Int c = a + b;
+    Int d = a - b;
+    Int e = a * b;
+    Int f = a / b;
+    
+    d.print();
+    e.print();
+    f.print();
+    c.print();
+    return 0;
+}
