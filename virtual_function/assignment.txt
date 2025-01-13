@@ -1,0 +1,195 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Base {
+public:
+    Base(string s) : str(s) { }
+    string getstr() { return str; }
+    virtual void show() { cout << str << endl; }
+private:
+    string str;
+};
+
+class Der : public Base {
+public:
+    Der(int n, string s) : Base(s), num(n) { }
+    void show() { cout << " " << num << endl; }
+private:
+    int num;
+};
+
+int main(){
+Base bobj("hello"); 
+Base *bptr1 = &bobj; 
+Base &bref1 = bobj;
+
+Der dobj(100, "welcome");
+Base *bptr2 = &dobj;
+Base &bref2 = dobj;
+}
+
+
+#include <iostream>
+using namespace std;
+
+class Vehicles {
+public:
+    virtual void display() { cout << "Displaying Vehicle" << endl; }
+};
+
+class FourWheelers : public Vehicles {
+public:
+    void display() override { cout << "Displaying Four-Wheeler" << endl; }
+};
+
+class Cars : public FourWheelers {
+public:
+    void display() override { cout << "Displaying Car" << endl; }
+};
+
+class Sedan : public Cars {
+public:
+    void display() override { cout << "Displaying Sedan" << endl; }
+};
+
+class SUV : public Cars {
+public:
+    void display() override { cout << "Displaying SUV" << endl; }
+};
+
+void show(Cars& cref) {
+    cref.display();
+}
+
+int main() {
+    Sedan sedan;
+    SUV suv;
+    FourWheelers fw;
+    Vehicles vehicle;
+
+    show(sedan); 
+    show(suv);   
+    // show(fw);   // Invalid
+    // show(vehicle); // Invalid
+
+    return 0;
+}
+
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+
+class Shape {
+public:
+    virtual double area() const = 0;
+    virtual double perimeter() const = 0;
+    virtual ~Shape() {}
+};
+
+
+class Square : public Shape {
+private:
+    double side;
+public:
+    Square(double s) : side(s) {}
+    double area() const override {
+        return side * side;
+    }
+    double perimeter() const override {
+        return 4 * side;
+    }
+};
+
+
+class Rectangle : public Shape {
+private:
+    double length, width;
+public:
+    Rectangle(double l, double w) : length(l), width(w) {}
+    double area() const override {
+        return length * width;
+    }
+    double perimeter() const override {
+        return 2 * (length + width);
+    }
+};
+
+
+class Circle : public Shape {
+private:
+    double radius;
+public:
+    Circle(double r) : radius(r) {}
+    double area() const override {
+        return M_PI * radius * radius;
+    }
+    double perimeter() const override {
+        return 2 * M_PI * radius;
+    }
+};
+
+
+int main(){
+    Shape* shapes[] = {new Square(5), new Rectangle(4, 6), new Circle(3)};
+    for (int i = 0; i < 3; i++) {
+        cout << "Area: " << shapes[i]->area() << endl;
+        cout << "Perimeter: " << shapes[i]->perimeter() << endl;
+        delete shapes[i];
+    }
+    return 0;
+    
+}
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+class Chart {
+public:
+    virtual void plotchart() const = 0;
+    virtual ~Chart() {}
+};
+
+
+class PieChart : public Chart {
+private:
+    vector<float> values;
+public:
+    PieChart(const vector<float>& vals) : values(vals) {}
+    void plotchart() const override {
+        cout << "Plotting Pie Chart with values: ";
+        for(auto v : values) cout << v << " ";
+        cout << endl;
+    }
+};
+
+
+class BarChart : public Chart {
+private:
+    vector<float> values;
+public:
+    BarChart(const vector<float>& vals) : values(vals) {}
+    void plotchart() const override {
+        cout << "Plotting Bar Chart with values: ";
+        for(auto v : values) cout << v << " ";
+        cout << endl;
+    }
+};
+int main() {
+    vector<float> pieValues = {30.5, 20.0, 25.0, 24.5};
+    vector<float> barValues = {10.0, 15.5, 20.0, 25.5};
+
+    PieChart pie(pieValues);
+    BarChart bar(barValues);
+
+    Chart* chart1 = &pie;
+    Chart* chart2 = &bar;
+
+    chart1->plotchart();
+    chart2->plotchart();
+
+    return 0;
+}
