@@ -1,0 +1,30 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+int main() {
+    ifstream file("input.txt");
+    if (!file) {
+        cerr << "Error opening file!" << endl;
+        return 1;
+    }
+
+    string word;
+    map<string, int> word_freq;
+
+    while (file >> word) {
+        if (word.length() > 4) {
+            word_freq[word]++;
+        }
+    }
+
+    for (auto& entry : word_freq) {
+        cout << entry.first << ": " << entry.second << endl;
+    }
+
+    return 0;
+}

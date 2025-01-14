@@ -1,0 +1,517 @@
+Exercise 1: Which, if any, of the following vector definitions are in error?
+(a) vector<vector<int>> ivec; Valid: This defines a vector of vectors of integers.
+(b) vector svec; Invalid: The type of elements in the vector is not specified. It should be vector<some_type> svec;
+(c) vector svec(10, "null"); Invalid: The type of elements in the vector is not specified. It should be vector<string> svec(10, "null");
+
+Exercise 2: How many elements are there in each of the following vectors? What are the values of the elements?
+(a) vector ivec1; 0 elements, no values.
+(b) vector ivec3(10, 42); 10 elements, all with value 42.
+(c) vector svec1; 0 elements, no values.
+(d) vector svec3(10, "hello"); 10 elements, all with value "hello".
+
+3.
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> vec(10); // Create a vector with 10 elements (default initialized to 0)
+
+    // Assign values using an iterator
+    for (vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        *it = *it * 2; // Double the current value
+    }
+
+    // Print the elements
+    for (int i : vec) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+4.
+#include <iostream>
+#include <list>
+
+using namespace std;
+
+int main() {
+    list<int> lst = {1, 2, 3, 4, 5};
+
+    // Print in reverse order using reverse iterators
+    for (list<int>::reverse_iterator rit = lst.rbegin(); rit != lst.rend(); ++rit) {
+        cout << *rit << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+5.
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <filename>" << endl;
+        return 1;
+    }
+
+    string filename = argv[1];
+    ifstream file(filename);
+
+    if (!file) {
+        cerr << "Error opening file: " << filename << endl;
+        return 1;
+    }
+
+    vector<string> vec;
+    string line;
+
+    while (getline(file, line)) {
+        vec.push_back(line);
+    }
+
+    // Print the elements in the vector
+    for (const string& str : vec) {
+        cout << str << endl;
+    }
+
+    return 0;
+}
+
+6.
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    vector<int> vec = {1, 2, 3, 4, 5};
+    list<int> lst = {5, 4, 3, 2, 1};
+
+    // Sort both vector and list
+    sort(vec.begin(), vec.end());
+    lst.sort();
+
+    // Compare sorted elements
+    bool same = equal(vec.begin(), vec.end(), lst.begin());
+
+    if (same) {
+        cout << "Vector and list contain the same elements." << endl;
+    } else {
+        cout << "Vector and list do not contain the same elements." << endl;
+    }
+
+    return 0;
+}
+
+7.
+#include <iostream>
+#include <deque>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    deque<string> strings = {"apple", "banana", "cherry", "date", "fig"};
+
+    string target = "banana";
+
+    // Find the target string in the deque
+    auto it = find(strings.begin(), strings.end(), target);
+
+    // If found, remove it
+    if (it != strings.end()) {
+        strings.erase(it);
+    }
+
+    // Print the updated deque
+    for (const string& str : strings) {
+        cout << str << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+8.
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+int main() {
+    map<string, string> phonebook = {
+        {"1234567890", "Alice"},
+        {"9876543210", "Bob"},
+        {"5551234567", "Charlie"}
+    };
+
+    string number = "9876543210";
+
+    // Find the name associated with the number
+    auto it = phonebook.find(number);
+
+    if (it != phonebook.end()) {
+        cout << "Name for number " << number << ": " << it->second << endl;
+    } else {
+        cout << "Number not found in phonebook." << endl;
+    }
+
+    return 0;
+}
+
+9.
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+int main() {
+    multimap<string, string> dictionary = {
+        {"apple", "A round, edible fruit of a tree of the rose family"},
+        {"apple", "A device for playing recorded sound, typically portable"},
+        {"banana", "A long, curved, yellow fruit"},
+        {"cherry", "A small, round, red fruit"}
+    };
+
+    string word = "apple";
+
+    // Find all meanings for the given word
+    auto range = dictionary.equal_range(word);
+
+    cout << "Meanings for " << word << ":" << endl;
+    for (auto it = range.first; it != range.second; ++it) {
+        cout << "- " << it->second << endl;
+    }
+
+    return 0;
+}
+
+10.
+#include <iostream>
+#include <set>
+#include <string>
+
+using namespace std;
+
+int main() {
+    set<string> ssns = {"123-456-7890", "987-654-3210", "555-123-4567"};
+
+    string ssn = "123-456-7890";
+
+    // Check if the SSN exists in the set
+    if (ssns.count(ssn) > 0) {
+        cout << "SSN " << ssn << " found in the set." << endl;
+    } else {
+        cout << "SSN " << ssn << " not found in the set." << endl;
+    }
+
+    return 0;
+} 
+
+11.
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> scores = {78, 65, 55, 90, 45, 82, 70, 68, 58, 48, 88, 72, 62, 52, 42, 95, 75, 65, 55, 45}; 
+    int distinctions = 0, first_class = 0, second_class = 0;
+
+    for (int score : scores) {
+        if (score >= 75) {
+            distinctions++;
+        } else if (score >= 60 && score < 75) {
+            first_class++;
+        } else if (score >= 50 && score < 60) {
+            second_class++;
+        }
+    }
+
+    cout << "Number of distinctions: " << distinctions << endl;
+    cout << "Number of 1st class: " << first_class << endl;
+    cout << "Number of 2nd class: " << second_class << endl;
+
+    return 0;
+}
+
+12.
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    vector<string> words = {"apple", "banana", "cherry", "date", "fig"};
+
+    // Sort in reverse order
+    sort(words.begin(), words.end(), greater<string>()); 
+
+    // Print the sorted vector
+    for (const string& word : words) {
+        cout << word << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+13.
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <string>
+
+using namespace std;
+
+int main() {
+    ifstream file("input.txt"); // Replace "input.txt" with the actual filename
+
+    if (!file) {
+        cerr << "Error opening file!" << endl;
+        return 1;
+    }
+
+    set<string> unique_words;
+    string word;
+
+    while (file >> word) {
+        unique_words.insert(word);
+    }
+
+    for (const string& word : unique_words) {
+        cout << word << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+14.
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <string>
+
+using namespace std;
+
+int main() {
+    ifstream file("input.txt"); // Replace "input.txt" with the actual filename
+
+    if (!file) {
+        cerr << "Error opening file!" << endl;
+        return 1;
+    }
+
+    set<string> unique_words;
+    string word;
+
+    while (file >> word) {
+        unique_words.insert(word);
+    }
+
+    for (const string& word : unique_words) {
+        cout << word << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+15.
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+    ifstream input_file("number.dat");
+    ofstream output_file("sort.dat");
+
+    if (!input_file || !output_file) {
+        cerr << "Error opening files!" << endl;
+        return 1;
+    }
+
+    vector<int> numbers(istream_iterator<int>(input_file), istream_iterator<int>());
+
+    sort(numbers.begin(), numbers.end(), greater<int>());
+
+    copy(numbers.begin(), numbers.end(), ostream_iterator<int>(output_file, " "));
+
+    return 0;
+}
+
+16.
+#include <iostream>
+#include <fstream>
+#include <array>
+
+using namespace std;
+
+int main() {
+    ifstream file("digits.txt"); // Replace "digits.txt" with the actual filename
+
+    if (!file) {
+        cerr << "Error opening file!" << endl;
+        return 1;
+    }
+
+    array<int, 10> digit_counts = {0}; // Array to store counts of each digit (0-9)
+
+    int digit;
+    while (file >> digit) {
+        if (digit >= 0 && digit <= 9) {
+            digit_counts[digit]++; // Increment count for the corresponding digit
+        }
+    }
+
+    for (int i = 0; i < 10; ++i) {
+        cout << i << ": " << digit_counts[i] << " times" << endl;
+    }
+
+    return 0;
+}
+
+17.
+#include <iostream>
+#include <fstream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    ifstream input_file("digits.txt");
+    ofstream output_file("unique.dat");
+
+    if (!input_file || !output_file) {
+        cerr << "Error opening files!" << endl;
+        return 1;
+    }
+
+    set<int> unique_digits;
+    int digit;
+
+    while (input_file >> digit) {
+        unique_digits.insert(digit);
+    }
+
+    for (int number : unique_digits) {
+        output_file << number << " ";
+    }
+
+    return 0;
+}
+
+18.
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <iterator>
+
+using namespace std;
+
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        cerr << "Usage: " << argv[0] << " <filename1> <filename2>" << endl;
+        return 1;
+    }
+
+    ifstream file1(argv[1]);
+    ifstream file2(argv[2]);
+
+    if (!file1 || !file2) {
+        cerr << "Error opening files." << endl;
+        return 1;
+    }
+
+    set<int> merged_numbers;
+
+    int num;
+
+    while (file1 >> num) {
+        merged_numbers.insert(num);
+    }
+
+    while (file2 >> num) {
+        merged_numbers.insert(num);
+    }
+
+    for (int number : merged_numbers) {
+        cout << number << endl;
+    }
+
+    return 0;
+}
+
+19.
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    // Initialize sets A and B with sample data
+    set<int> A = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    set<int> B = {5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+
+    // Union of A and B
+    set<int> A_union_B; 
+    set_union(A.begin(), A.end(), B.begin(), B.end(), inserter(A_union_B, A_union_B.begin()));
+
+    cout << "A U B = {";
+    for (int num : A_union_B) {
+        cout << " " << num;
+    }
+    cout << " }" << endl;
+
+    // Intersection of A and B
+    set<int> A_intersection_B;
+    set_intersection(A.begin(), A.end(), B.begin(), B.end(), inserter(A_intersection_B, A_intersection_B.begin()));
+
+    cout << "A âˆ© B = {";
+    for (int num : A_intersection_B) {
+        cout << " " << num;
+    }
+    cout << " }" << endl;
+
+    // Difference of A and B (elements in A but not in B)
+    set<int> A_minus_B;
+    set_difference(A.begin(), A.end(), B.begin(), B.end(), inserter(A_minus_B, A_minus_B.begin()));
+
+    cout << "A - B = {";
+    for (int num : A_minus_B) {
+        cout << " " << num;
+    }
+    cout << " }" << endl;
+
+    // Difference of B and A (elements in B but not in A)
+    set<int> B_minus_A;
+    set_difference(B.begin(), B.end(), A.begin(), A.end(), inserter(B_minus_A, B_minus_A.begin()));
+
+    cout << "B - A = {";
+    for (int num : B_minus_A) {
+        cout << " " << num;
+    }
+    cout << " }" << endl;
+
+    return 0;
+}
