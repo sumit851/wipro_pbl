@@ -1,0 +1,119 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int main() {
+    std::ifstream inputFile;
+    std::string fileName = "war.txt";
+    std::string line;
+    std::string searchString;
+    bool found = false;
+
+    
+    inputFile.open(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open the file '" << fileName << "'." << std::endl;
+        return 1;
+    }
+
+    
+    std::cout << "Enter the search string: ";
+    std::getline(std::cin, searchString);
+
+ 
+    while (std::getline(inputFile, line)) {
+        if (line.find(searchString) != std::string::npos) {
+            found = true;
+            break; 
+        }
+    }
+
+   
+    inputFile.close();
+
+   
+    if (found) {
+        std::cout << "Search string is found." << std::endl;
+    } else {
+        std::cout << "Can't find the search string." << std::endl;
+    }
+
+    return 0;
+}
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <cctype>
+
+
+std::string cleanString(const std::string& str) {
+    std::string cleaned;
+    for(char ch : str){
+        if(!std::ispunct(static_cast<unsigned char>(ch))){
+            cleaned += ch;
+        }
+    }
+    return cleaned;
+}
+
+int main() {
+    std::ifstream inputFile("war.txt");
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open 'war.txt'." << std::endl;
+        return 1;
+    }
+
+    std::vector<std::string> words;
+    std::string word;
+
+  
+    while (inputFile >> word) {
+        words.push_back(cleanString(word));
+    }
+
+    inputFile.close();
+
+  
+    std::vector<std::string> ascending = words;
+    std::sort(ascending.begin(), ascending.end());
+    std::cout << "1) Alphabetical Order - Ascending:" << std::endl;
+    for(const auto& w : ascending){
+        std::cout << w << " ";
+    }
+    std::cout << "\n\n";
+
+   
+    std::vector<std::string> descending = words;
+    std::sort(descending.begin(), descending.end(), std::greater<std::string>());
+    std::cout << "2) Alphabetical Order - Descending:" << std::endl;
+    for(const auto& w : descending){
+        std::cout << w << " ";
+    }
+    std::cout << "\n\n";
+
+  
+    std::vector<std::string> lengthAsc = words;
+    std::sort(lengthAsc.begin(), lengthAsc.end(), [](const std::string& a, const std::string& b) {
+        return a.length() < b.length();
+    });
+    std::cout << "3) Ascending Order of Length:" << std::endl;
+    for(const auto& w : lengthAsc){
+        std::cout << w << " ";
+    }
+    std::cout << "\n\n";
+
+    
+    std::vector<std::string> lengthDesc = words;
+    std::sort(lengthDesc.begin(), lengthDesc.end(), [](const std::string& a, const std::string& b) {
+        return a.length() > b.length();
+    });
+    std::cout << "4) Descending Order of Length:" << std::endl;
+    for(const auto& w : lengthDesc){
+        std::cout << w << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
