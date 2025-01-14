@@ -1,0 +1,376 @@
+#include <iostream>
+#include <cstdio>
+#include <iomanip>
+
+struct Student {
+    char name[50];
+    float marks1;
+    float marks2;
+    int score;
+    float percentage;
+};
+
+int main() {
+    FILE *fin, *fout;
+    Student s;
+
+ 
+    fin = fopen("student_unformatted.txt", "r");
+    if (fin == NULL) {
+        std::cerr << "Error opening input file." << std::endl;
+        return 1;
+    }
+
+   
+    fout = fopen("student_formatted.txt", "w");
+    if (fout == NULL) {
+        std::cerr << "Error opening output file." << std::endl;
+        fclose(fin);
+        return 1;
+    }
+
+    
+    fprintf(fout, "%-15s %-10s %-10s %-10s %-10s\n", "Name", "Marks1", "Marks2", "Score", "Percentage");
+    fprintf(fout, "--------------------------------------------------------------\n");
+
+   
+    while (fscanf(fin, "%s %f %f %d %f", s.name, &s.marks1, &s.marks2, &s.score, &s.percentage) != EOF) {
+        fprintf(fout, "%-15s %-10.2f %-10.2f %-10d %-10.2f\n",
+                s.name, s.marks1, s.marks2, s.score, s.percentage);
+    }
+
+    std::cout << "Data has been formatted and written to 'student_formatted.txt'." << std::endl;
+
+    
+    fclose(fin);
+    fclose(fout);
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+class Message {
+public:
+  
+    friend std::ostream& operator<<(std::ostream& os, const Message& msg);
+
+private:
+    std::string content;
+};
+
+
+std::ostream& operator<<(std::ostream& os, const Message& msg) {
+    std::ifstream fin("IMP_Messages.txt");
+    if (!fin) {
+        os << "Error opening IMP_Messages.txt";
+        return os;
+    }
+
+    std::string line;
+    while (std::getline(fin, line)) {
+        os << line << " ";
+    }
+    fin.close();
+    return os;
+}
+
+int main() {
+    int i = 10;
+    float f = 3.14f;
+    char c = 'A';
+    Message M;
+
+    std::cout << i << " " << f << " " << M << " " << c << std::endl;
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+
+class Vector {
+    int A[10];
+public:
+   
+    Vector(int k = 0) {
+        for(int i = 0; i < 10; ++i) {
+            A[i] = k;
+        }
+    }
+
+    
+    void Display() const {
+        for(int i = 0; i < 10; ++i) {
+            std::cout << A[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    
+    friend std::ifstream& operator>>(std::ifstream& fin, Vector& v);
+
+  
+    friend std::ofstream& operator<<(std::ofstream& fout, const Vector& v);
+};
+
+
+std::ifstream& operator>>(std::ifstream& fin, Vector& v) {
+    for(int i = 0; i < 10; ++i) {
+        fin >> v.A[i];
+    }
+    return fin;
+}
+
+
+std::ofstream& operator<<(std::ofstream& fout, const Vector& v) {
+    for(int i = 0; i < 10; ++i) {
+        fout << v.A[i] << " ";
+    }
+    return fout;
+}
+
+int main() {
+    Vector v1;
+    Vector v2(5);
+
+   
+    std::cout << "Vector v1 (initialized to 0): ";
+    v1.Display();
+
+    std::cout << "Vector v2 (initialized to 5): ";
+    v2.Display();
+
+ 
+    std::ofstream fout("vector_output.txt");
+    if(!fout) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return 1;
+    }
+    fout << v2;
+    fout.close();
+
+   
+    std::ifstream fin("vector_output.txt");
+    if(!fin) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return 1;
+    }
+    fin >> v1;
+    fin.close();
+
+  
+    std::cout << "Vector v1 after reading from file: ";
+    v1.Display();
+
+    std::cout << "Vector v2 remains: ";
+    v2.Display();
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+
+int main() {
+    std::ifstream fin("text", std::ios::in | std::ios::binary);
+    std::ofstream fout("reverseText", std::ios::out | std::ios::binary);
+
+    if(!fin) {
+        std::cerr << "Error opening input file 'text'." << std::endl;
+        return 1;
+    }
+    if(!fout) {
+        std::cerr << "Error opening output file 'reverseText'." << std::endl;
+        fin.close();
+        return 1;
+    }
+
+   
+    fin.seekg(0, std::ios::end);
+    std::streampos fileSize = fin.tellg();
+
+   
+    for(std::streampos i = fileSize - 1; i >= 0; --i) {
+        fin.seekg(i);
+        char c;
+        fin.get(c);
+        fout.put(c);
+        if(i == 0) break; 
+    }
+
+    std::cout << "File has been read in reverse order and written to 'reverseText'." << std::endl;
+
+    fin.close();
+    fout.close();
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+
+int main(int argc, char* argv[]) {
+    if(argc != 3) {
+        std::cerr << "Usage: ./file_copy <source_file> <destination_file>" << std::endl;
+        return 1;
+    }
+
+    std::ifstream fin(argv[1], std::ios::in | std::ios::binary);
+    if(!fin) {
+        std::cerr << "Error opening source file: " << argv[1] << std::endl;
+        return 1;
+    }
+
+    std::ofstream fout(argv[2], std::ios::out | std::ios::binary);
+    if(!fout) {
+        std::cerr << "Error opening destination file: " << argv[2] << std::endl;
+        fin.close();
+        return 1;
+    }
+
+    fout << fin.rdbuf(); 
+
+    std::cout << "File has been copied successfully." << std::endl;
+
+    fin.close();
+    fout.close();
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int main() {
+    std::string searchStr, filename, line;
+    bool found = false;
+
+    
+    std::cout << "Enter the string to be searched: ";
+    std::getline(std::cin, searchStr);
+
+    std::cout << "Enter the name of the file in which the string has to be searched: ";
+    std::getline(std::cin, filename);
+
+   
+    std::ifstream fin(filename);
+    if(!fin) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return 1;
+    }
+
+    
+    while(std::getline(fin, line)) {
+        if(line.find(searchStr) != std::string::npos) {
+            found = true;
+            break;
+        }
+    }
+
+   
+    if(found)
+        std::cout << "STRING PRESENT" << std::endl;
+    else
+        std::cout << "STRING not PRESENT" << std::endl;
+
+    fin.close();
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+struct Employee {
+    int empNo;
+    std::string name;
+    std::string job;
+    float salary;
+    int deptNo;
+};
+
+int main() {
+    const int MAX_EMPLOYEES = 10;
+    Employee employees[MAX_EMPLOYEES];
+    int n = 0;
+
+  
+    std::cout << "Enter details for " << MAX_EMPLOYEES << " employees:\n";
+    for(int i = 0; i < MAX_EMPLOYEES; ++i) {
+        std::cout << "Employee " << (i+1) << ":\n";
+        std::cout << "  Employee No: ";
+        std::cin >> employees[i].empNo;
+        std::cin.ignore(); // Clear newline character
+        std::cout << "  Name: ";
+        std::getline(std::cin, employees[i].name);
+        std::cout << "  Job: ";
+        std::getline(std::cin, employees[i].job);
+        std::cout << "  Salary: ";
+        std::cin >> employees[i].salary;
+        std::cout << "  Department No: ";
+        std::cin >> employees[i].deptNo;
+        std::cin.ignore(); // Clear newline character
+        n++;
+    }
+
+    
+    std::ofstream fout("employee_db.txt");
+    if(!fout) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return 1;
+    }
+
+    for(int i = 0; i < n; ++i) {
+        fout << employees[i].empNo << "," 
+             << employees[i].name << "," 
+             << employees[i].job << "," 
+             << employees[i].salary << "," 
+             << employees[i].deptNo << "\n";
+    }
+    fout.close();
+    std::cout << "Employee details have been saved to 'employee_db.txt'.\n";
+
+   
+    std::string searchName;
+    std::cout << "\nEnter the name of the employee to search: ";
+    std::getline(std::cin, searchName);
+
+    std::ifstream fin("employee_db.txt");
+    if(!fin) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return 1;
+    }
+
+    bool found = false;
+    Employee emp;
+    while(fin >> emp.empNo) {
+        fin.ignore(); 
+        std::getline(fin, emp.name, ',');
+        std::getline(fin, emp.job, ',');
+        fin >> emp.salary;
+        fin.ignore(); 
+        fin >> emp.deptNo;
+        fin.ignore(); 
+
+        if(emp.name == searchName) {
+            found = true;
+            std::cout << "\nEmployee Details:\n";
+            std::cout << "  Employee No: " << emp.empNo << "\n";
+            std::cout << "  Name: " << emp.name << "\n";
+            std::cout << "  Job: " << emp.job << "\n";
+            std::cout << "  Salary: " << emp.salary << "\n";
+            std::cout << "  Department No: " << emp.deptNo << "\n";
+            break;
+        }
+    }
+
+    if(!found)
+        std::cout << "No data found." << std::endl;
+
+    fin.close();
+    return 0;
+}

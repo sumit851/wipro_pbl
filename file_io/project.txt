@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    ifstream inputFile("input.txt");
+    ofstream evenFile("even.txt");
+    ofstream oddFile("odd.txt");
+    
+    string line;
+    int lineNumber = 1;
+    
+    
+    if (!inputFile.is_open()) {
+        cout << "Error opening input file!" << endl;
+        return 1;
+    }
+    
+   
+    while (getline(inputFile, line)) {
+   
+        if (lineNumber % 2 == 0) {
+            evenFile << line << endl;
+        }
+   
+        else {
+            oddFile << line << endl;
+        }
+        lineNumber++;
+    }
+    
+    
+    inputFile.close();
+    evenFile.close();
+    oddFile.close();
+    
+    cout << "Files have been successfully created!" << endl;
+    return 0;
+}
+
