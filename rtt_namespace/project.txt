@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Base class
+class Country {
+protected:
+    string name;
+    int population;
+public:
+    Country(string n = "", int p = 0) : name(n), population(p) {}
+    
+    virtual void display() {
+        cout << "Country: " << name << endl;
+        cout << "Population: " << population << endl;
+    }
+};
+
+// First level derived class
+class State : public Country {
+protected:
+    string capital;
+    int numDistricts;
+public:
+    State(string n = "", int p = 0, string c = "", int d = 0) 
+        : Country(n, p), capital(c), numDistricts(d) {}
+    
+    void display() override {
+        Country::display();
+        cout << "Capital: " << capital << endl;
+        cout << "Number of Districts: " << numDistricts << endl;
+    }
+};
+
+// Second level derived class
+class Territory : public State {
+protected:
+    bool unionTerritory;
+    string administrator;
+public:
+    Territory(string n = "", int p = 0, string c = "", int d = 0, bool ut = false, string admin = "")
+        : State(n, p, c, d), unionTerritory(ut), administrator(admin) {}
+    
+    void display() override {
+        State::display();
+        cout << "Union Territory: " << (unionTerritory ? "Yes" : "No") << endl;
+        cout << "Administrator: " << administrator << endl;
+    }
+};
+
+// Third level derived class
+class Municipality : public Territory {
+private:
+    int municipalityCode;
+    string mayor;
+public:
+    Municipality(string n = "", int p = 0, string c = "", int d = 0, 
+                bool ut = false, string admin = "", int code = 0, string m = "")
+        : Territory(n, p, c, d, ut, admin), municipalityCode(code), mayor(m) {}
+    
+    void display() override {
+        Territory::display();
+        cout << "Municipality Code: " << municipalityCode << endl;
+        cout << "Mayor: " << mayor << endl;
+    }
+};
+
+int main() {
+    Municipality mun("India", 1380000000, "Delhi", 28, false, 
+                    "Chief Commissioner", 101, "John Doe");
+    mun.display();
+    return 0;
+}
