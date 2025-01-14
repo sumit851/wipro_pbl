@@ -1,0 +1,331 @@
+#include <iostream>
+#include <exception>
+
+int main() {
+    int d, n1, n2;
+
+    std::cout << "Enter numerator (n1): ";
+    std::cin >> n1;
+    std::cout << "Enter denominator (n2): ";
+    std::cin >> n2;
+
+    try {
+        if(n2 == 0) {
+            throw std::runtime_error("Division by zero is undefined.");
+        }
+        d = n1 / n2;
+        std::cout << "The division is " << d << std::endl;
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <exception>
+
+#define SIZE 10
+
+int main() {
+    int A[SIZE];
+    int index;
+
+    try {
+        for (int i = 0; i < SIZE + 1; i++) { 
+            if(i < 0 || i >= SIZE) {
+                throw std::out_of_range("Array index out of bounds.");
+            }
+            A[i] = i * 10;
+            std::cout << "A[" << i << "] = " << A[i] << std::endl;
+        }
+    }
+    catch(const std::out_of_range& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <exception>
+
+int main() {
+    std::ifstream fin;
+    std::ofstream fout;
+    std::string inputFileName, outputFileName;
+
+    std::cout << "Enter the input file name: ";
+    std::cin >> inputFileName;
+
+    std::cout << "Enter the output file name: ";
+    std::cin >> outputFileName;
+
+    try {
+        fin.open(inputFileName);
+        if(!fin.is_open()) {
+            throw std::runtime_error("Failed to open input file: " + inputFileName);
+        }
+
+        fout.open(outputFileName);
+        if(!fout.is_open()) {
+            throw std::runtime_error("Failed to open output file: " + outputFileName);
+        }
+
+        
+        std::string line;
+        while(std::getline(fin, line)) {
+            fout << line << std::endl;
+        }
+
+        std::cout << "File copied successfully from " << inputFileName << " to " << outputFileName << "." << std::endl;
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+      
+    }
+
+   
+    if(fin.is_open()) fin.close();
+    if(fout.is_open()) fout.close();
+
+    return 0;
+}
+#include <iostream>
+#include <fstream>
+#include <exception>
+
+int main() {
+    std::ifstream fin;
+    std::ofstream fout;
+    std::string inputFileName, outputFileName;
+
+    std::cout << "Enter the input file name: ";
+    std::cin >> inputFileName;
+
+    std::cout << "Enter the output file name: ";
+    std::cin >> outputFileName;
+
+    try {
+        fin.open(inputFileName);
+        if(!fin.is_open()) {
+            throw std::runtime_error("Failed to open input file: " + inputFileName);
+        }
+
+        fout.open(outputFileName);
+        if(!fout.is_open()) {
+            throw std::runtime_error("Failed to open output file: " + outputFileName);
+        }
+
+        
+        std::string line;
+        while(std::getline(fin, line)) {
+            fout << line << std::endl;
+        }
+
+        std::cout << "File copied successfully from " << inputFileName << " to " << outputFileName << "." << std::endl;
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+      
+    }
+
+   
+    if(fin.is_open()) fin.close();
+    if(fout.is_open()) fout.close();
+
+    return 0;
+}
+#include <iostream>
+#include <exception>
+
+class Vector {
+    int A[10];
+public:
+  
+    Vector(int k = 1) {
+        for(int i = 0; i < 10; ++i) {
+            A[i] = k;
+        }
+    }
+
+    
+    void Display() const {
+        for(int i = 0; i < 10; ++i) {
+            std::cout << A[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+   
+    Vector operator/(const Vector& v) const {
+        Vector result;
+        for(int i = 0; i < 10; ++i) {
+            if(v.A[i] == 0) {
+                throw std::runtime_error("Division by zero encountered at index " + std::to_string(i));
+            }
+            result.A[i] = this->A[i] / v.A[i];
+        }
+        return result;
+    }
+};
+
+int main() {
+    try {
+        Vector v1(100);
+        Vector v2(10);  
+        std::cout << "Vector v1: ";
+        v1.Display();
+
+        std::cout << "Vector v2: ";
+        v2.Display();
+
+        Vector v3 = v1 / v2; 
+        std::cout << "Vector v3 (v1 / v2): ";
+        v3.Display();
+    }
+    catch(const std::runtime_error& e) {
+        std::cerr << "Exception during vector division: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <exception>
+#include <cstring>
+
+class String {
+    char A[10];
+public:
+  
+    String(const char* k = "") {
+        std::strncpy(A, k, 9);
+        A[9] = '\0'; 
+    }
+
+   
+    void Display() const {
+        std::cout << A << std::endl;
+    }
+
+   
+    char& operator[](int i) {
+        if(i < 0 || i >= 10) {
+            throw std::out_of_range("Index " + std::to_string(i) + " is out of bounds.");
+        }
+        return A[i];
+    }
+
+  
+    const char& operator[](int i) const {
+        if(i < 0 || i >= 10) {
+            throw std::out_of_range("Index " + std::to_string(i) + " is out of bounds.");
+        }
+        return A[i];
+    }
+};
+
+int main() {
+    try {
+        String s("Hello");
+
+        std::cout << "Original String: ";
+        s.Display();
+
+        std::cout << "Character at index 1: " << s[1] << std::endl;
+
+      
+        std::cout << "Character at index 10: " << s[10] << std::endl;
+    }
+    catch(const std::out_of_range& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+#include <iostream>
+#include <exception>
+#include <typeinfo>
+
+class Vector {
+    int A[10];
+public:
+   
+    Vector(int k = 0) {
+        for(int i = 0; i < 10; ++i) {
+            A[i] = k;
+        }
+    }
+
+    void Display() const {
+        for(int i = 0; i < 10; ++i) {
+            std::cout << A[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+   
+    int& operator[](int i) {
+        if(i < 0 || i >= 10) {
+            throw std::out_of_range("Integer index " + std::to_string(i) + " is out of bounds.");
+        }
+        return A[i];
+    }
+
+  
+    int& operator[](float k) {
+        throw std::invalid_argument("Float index " + std::to_string(k) + " is not a valid data type for indexing.");
+    }
+
+    
+    int& operator[](char k) {
+        throw std::invalid_argument(std::string("Character index '") + k + "' is not a valid data type for indexing.");
+    }
+};
+
+int main() {
+    Vector v(5); 
+
+    try {
+        std::cout << "Initial Vector: ";
+        v.Display();
+
+      
+        std::cout << "Element at index 3: " << v[3] << std::endl;
+
+   
+        v[3] = 30;
+        std::cout << "After modification, Vector: ";
+        v.Display();
+
+   
+        std::cout << "Element at index 10: " << v[10] << std::endl;
+    }
+    catch(const std::out_of_range& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    try {
+     
+        std::cout << "Element at float index 2.5: " << v[2.5f] << std::endl;
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    try {
+      
+        std::cout << "Element at char index 'a': " << v['a'] << std::endl;
+    }
+    catch(const std::invalid_argument& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}

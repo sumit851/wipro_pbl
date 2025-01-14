@@ -1,0 +1,77 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+class Stack {
+private:
+    static const int MAX_SIZE = 100;
+    std::string arr[MAX_SIZE];
+    int top;
+
+public:
+    Stack() : top(-1) {}
+    
+    void push(const std::string& str) {
+        if (top < MAX_SIZE - 1) {
+            arr[++top] = str;
+        }
+    }
+    
+    std::string pop() {
+        if (top >= 0) {
+            return arr[top--];
+        }
+        return "";
+    }
+    
+    bool isEmpty() {
+        return top == -1;
+    }
+};
+
+int main() {
+    std::ifstream inputFile;
+    std::ofstream evenFile, oddFile;
+    Stack evenStack, oddStack;
+    std::string line;
+    int lineNum = 1;
+    
+   
+    inputFile.open("input.txt");
+    evenFile.open("even.txt");
+    oddFile.open("odd.txt");
+    
+  
+    if (!inputFile.is_open()) {
+        std::cout << "Error opening input file!" << std::endl;
+        return 1;
+    }
+    
+ 
+    while (std::getline(inputFile, line)) {
+        if (lineNum % 2 == 0) {
+            evenStack.push(line);
+        } else {
+            oddStack.push(line);
+        }
+        lineNum++;
+    }
+    
+  
+    while (!evenStack.isEmpty()) {
+        evenFile << evenStack.pop() << std::endl;
+    }
+    
+  
+    while (!oddStack.isEmpty()) {
+        oddFile << oddStack.pop() << std::endl;
+    }
+    
+  
+    inputFile.close();
+    evenFile.close();
+    oddFile.close();
+    
+    std::cout << "Files have been successfully created!" << std::endl;
+    return 0;
+}
