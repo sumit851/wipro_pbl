@@ -1,0 +1,1282 @@
+#include <iostream>
+#include <string>
+
+
+struct Employee {
+    int employeeID;
+    std::string employeeName;
+    std::string designation;
+};
+
+
+struct Node {
+    Employee data;
+    Node* next;
+};
+
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() : head(nullptr) {}
+
+   
+    void createNode() {
+        Employee emp;
+        std::cout << "Enter Employee ID: ";
+        std::cin >> emp.employeeID;
+        std::cin.ignore();
+        std::cout << "Enter Employee Name: ";
+        std::getline(std::cin, emp.employeeName);
+        std::cout << "Enter Designation: ";
+        std::getline(std::cin, emp.designation);
+
+        Node* newNode = new Node{emp, nullptr};
+
+        if (head == nullptr) {
+            head = newNode;
+            std::cout << "Node created and added as the head of the list.\n";
+        } else {
+            Node* temp = head;
+            while (temp->next != nullptr)
+                temp = temp->next;
+            temp->next = newNode;
+            std::cout << "Node created and added to the end of the list.\n";
+        }
+    }
+
+   
+    void insertNode() {
+        if (head == nullptr) {
+            std::cout << "List is empty. Use 'Create Node' to add nodes first.\n";
+            return;
+        }
+
+        int searchID;
+        std::cout << "Enter Employee ID after which to insert the new node: ";
+        std::cin >> searchID;
+        std::cin.ignore(); 
+
+        Node* temp = head;
+        while (temp != nullptr && temp->data.employeeID != searchID)
+            temp = temp->next;
+
+        if (temp == nullptr) {
+            std::cout << "Employee ID not found in the list.\n";
+            return;
+        }
+
+        Employee emp;
+        std::cout << "Enter Employee ID: ";
+        std::cin >> emp.employeeID;
+        std::cin.ignore(); 
+        std::cout << "Enter Employee Name: ";
+        std::getline(std::cin, emp.employeeName);
+        std::cout << "Enter Designation: ";
+        std::getline(std::cin, emp.designation);
+
+        Node* newNode = new Node{emp, temp->next};
+        temp->next = newNode;
+        std::cout << "Node inserted successfully after Employee ID " << searchID << ".\n";
+    }
+
+   
+    void deleteNode() {
+        if (head == nullptr) {
+            std::cout << "List is empty. Nothing to delete.\n";
+            return;
+        }
+
+        int delID;
+        std::cout << "Enter Employee ID to delete: ";
+        std::cin >> delID;
+
+        Node* temp = head;
+        Node* prev = nullptr;
+
+      
+        if (temp != nullptr && temp->data.employeeID == delID) {
+            head = temp->next;
+            delete temp;
+            std::cout << "Node with Employee ID " << delID << " deleted successfully.\n";
+            return;
+        }
+
+      
+        while (temp != nullptr && temp->data.employeeID != delID) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+   
+        if (temp == nullptr) {
+            std::cout << "Employee ID " << delID << " not found in the list.\n";
+            return;
+        }
+
+      
+        prev->next = temp->next;
+        delete temp;
+        std::cout << "Node with Employee ID " << delID << " deleted successfully.\n";
+    }
+
+   
+    void displayNodes() const {
+        if (head == nullptr) {
+            std::cout << "List is empty.\n";
+            return;
+        }
+
+        Node* temp = head;
+        std::cout << "\nEmployee Details in the List:\n";
+        std::cout << "--------------------------------------------\n";
+        while (temp != nullptr) {
+            std::cout << "Employee ID: " << temp->data.employeeID << "\n";
+            std::cout << "Employee Name: " << temp->data.employeeName << "\n";
+            std::cout << "Designation: " << temp->data.designation << "\n";
+            std::cout << "--------------------------------------------\n";
+            temp = temp->next;
+        }
+    }
+
+   
+    ~LinkedList() {
+        Node* current = head;
+        while (current != nullptr) {
+            Node* nextNode = current->next;
+            delete current;
+            current = nextNode;
+        }
+    }
+};
+
+int main() {
+    LinkedList list;
+    int choice;
+
+    while (true) {
+        std::cout << "\n----- Employee Linked List Menu -----\n";
+        std::cout << "1. Create Node\n";
+        std::cout << "2. Delete Node\n";
+        std::cout << "3. Insert Node\n";
+        std::cout << "4. Display Nodes\n";
+        std::cout << "5. Exit\n";
+        std::cout << "Enter your option (1..5): ";
+        std::cin >> choice;
+        std::cin.ignore(); 
+
+        switch (choice) {
+            case 1:
+                list.createNode();
+                break;
+            case 2:
+                list.deleteNode();
+                break;
+            case 3:
+                list.insertNode();
+                break;
+            case 4:
+                list.displayNodes();
+                break;
+            case 5:
+                std::cout << "Exiting the program. Goodbye!\n";
+                return 0;
+            default:
+                std::cout << "Invalid option. Please enter a number between 1 and 5.\n";
+        }
+    }
+
+    return 0;
+}
+
+#include <iostream>
+
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+
+class Stack {
+private:
+    Node* topNode;
+
+public:
+    Stack() : topNode(nullptr) {}
+
+ 
+    void push(int value) {
+        Node* newNode = new Node{value, topNode};
+        topNode = newNode;
+        std::cout << "Pushed " << value << " onto the stack.\n";
+    }
+
+   
+    int pop() {
+        if (isEmpty()) {
+            std::cerr << "Stack Underflow! Cannot pop from an empty stack.\n";
+            return -1; 
+        }
+        Node* temp = topNode;
+        int poppedValue = temp->data;
+        topNode = topNode->next;
+        delete temp;
+        return poppedValue;
+    }
+
+   
+    bool isEmpty() const {
+        return topNode == nullptr;
+    }
+
+  
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main() {
+    Stack stack;
+    int choice, value;
+
+    while (true) {
+        std::cout << "\n----- Stack Menu -----\n";
+        std::cout << "1. Enter data to push on the stack\n";
+        std::cout << "2. Pop element and print it\n";
+        std::cout << "3. Exit\n";
+        std::cout << "Enter your option (1..3): ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                std::cout << "Enter integer to push: ";
+                std::cin >> value;
+                stack.push(value);
+                break;
+            case 2:
+                value = stack.pop();
+                if (value != -1) { 
+                    std::cout << "Popped value: " << value << "\n";
+                }
+                break;
+            case 3:
+                std::cout << "Exiting the program. Goodbye!\n";
+                return 0;
+            default:
+                std::cout << "Invalid option. Please enter a number between 1 and 3.\n";
+        }
+    }
+
+    return 0;
+}
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+
+class Stack {
+private:
+    Node* topNode;
+
+public:
+    Stack() : topNode(nullptr) {}
+
+   
+    void push(int value) {
+        Node* newNode = new Node{value, topNode};
+        topNode = newNode;
+    }
+
+    
+    int pop() {
+        if (isEmpty()) {
+            std::cerr << "Stack Underflow! Cannot pop from an empty stack.\n";
+            return -1; 
+        }
+        Node* temp = topNode;
+        int poppedValue = temp->data;
+        topNode = topNode->next;
+        delete temp;
+        return poppedValue;
+    }
+
+   
+    bool isEmpty() const {
+        return topNode == nullptr;
+    }
+
+  
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main(int argc, char* argv[]) {
+  
+    if (argc != 2) {
+        std::cerr << "Usage: ./stack_from_file <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    Stack stack;
+    int number;
+    int count = 0;
+
+    
+    while (inputFile >> number) {
+        stack.push(number);
+        count++;
+    }
+
+    inputFile.close();
+
+    if (count < 10) {
+        std::cerr << "Error: The file must contain at least 10 integers. Only " << count << " found.\n";
+        return 1;
+    }
+
+    std::cout << "All elements have been pushed onto the stack.\n\n";
+
+  
+    std::cout << "Popping elements from the stack:\n";
+    while (!stack.isEmpty()) {
+        int popped = stack.pop();
+        if (popped != -1) { 
+            std::cout << popped << "\n";
+        }
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+
+
+struct ComplexData {
+    int firstInt;
+    std::string str;
+    int secondInt;
+};
+
+
+struct Node {
+    ComplexData data;
+    Node* next;
+};
+
+
+class Stack {
+private:
+    Node* topNode;
+
+public:
+    Stack() : topNode(nullptr) {}
+
+   
+    void push(const ComplexData& value) {
+        Node* newNode = new Node{value, topNode};
+        topNode = newNode;
+    }
+
+    
+    ComplexData pop() {
+        if (isEmpty()) {
+            std::cerr << "Stack Underflow! Cannot pop from an empty stack.\n";
+            return ComplexData{ -1, "", -1 }; 
+        }
+        Node* temp = topNode;
+        ComplexData poppedValue = temp->data;
+        topNode = topNode->next;
+        delete temp;
+        return poppedValue;
+    }
+
+   
+    bool isEmpty() const {
+        return topNode == nullptr;
+    }
+
+    
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+
+void printComplexData(const ComplexData& data) {
+    if (data.firstInt == -1 && data.secondInt == -1) {
+
+        return;
+    }
+    std::cout << data.firstInt << " " << data.str << " " << data.secondInt << "\n";
+}
+
+int main(int argc, char* argv[]) {
+   
+    if (argc != 2) {
+        std::cerr << "Usage: ./stack_complex_data <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    Stack stack;
+    std::string line;
+    int count = 0;
+
+    
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        ComplexData data;
+        if (!(iss >> data.firstInt >> data.str >> data.secondInt)) {
+            std::cerr << "Error: Invalid data format in line: " << line << "\n";
+            continue; 
+        }
+        stack.push(data);
+        count++;
+    }
+
+    inputFile.close();
+
+    if (count < 10) {
+        std::cerr << "Error: The file must contain at least 10 records. Only " << count << " found.\n";
+        return 1;
+    }
+
+    std::cout << "All records have been pushed onto the stack.\n\n";
+
+  
+    std::cout << "Popping elements from the stack:\n";
+    while (!stack.isEmpty()) {
+        ComplexData popped = stack.pop();
+        printComplexData(popped);
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+
+class Stack {
+private:
+    Node* topNode;
+
+public:
+    Stack() : topNode(nullptr) {}
+
+  
+    void push(int value) {
+        Node* newNode = new Node{value, topNode};
+        topNode = newNode;
+    }
+
+    
+    int pop() {
+        if (isEmpty()) {
+            std::cerr << "Stack Underflow! Cannot pop from an empty stack.\n";
+            return -1;
+        }
+        Node* temp = topNode;
+        int poppedValue = temp->data;
+        topNode = topNode->next;
+        delete temp;
+        return poppedValue;
+    }
+
+    
+    bool isEmpty() const {
+        return topNode == nullptr;
+    }
+
+   
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main(int argc, char* argv[]) {
+  
+    if (argc != 2) {
+        std::cerr << "Usage: ./stack_even_odd <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    Stack mainStack, evenStack, oddStack;
+    int number;
+    int count = 0;
+
+
+    while (inputFile >> number) {
+        mainStack.push(number);
+        count++;
+    }
+
+    inputFile.close();
+
+    if (count < 10) {
+        std::cerr << "Error: The file must contain at least 10 integers. Only " << count << " found.\n";
+        return 1;
+    }
+
+    std::cout << "All elements have been pushed onto the main stack.\n\n";
+
+  
+    while (!mainStack.isEmpty()) {
+        int popped = mainStack.pop();
+        if (popped == -1) continue; 
+
+        if (popped % 2 == 0) {
+            evenStack.push(popped);
+        } else {
+            oddStack.push(popped);
+        }
+    }
+
+   
+    std::cout << "Even Numbers:\n";
+    while (!evenStack.isEmpty()) {
+        int even = evenStack.pop();
+        if (even != -1) {
+            std::cout << even << "\n";
+        }
+    }
+
+    std::cout << "\nOdd Numbers:\n";
+  
+    while (!oddStack.isEmpty()) {
+        int odd = oddStack.pop();
+        if (odd != -1) {
+            std::cout << odd << "\n";
+        }
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <string>
+
+
+struct Node {
+    char data;
+    Node* next;
+};
+
+
+class Stack {
+private:
+    Node* topNode;
+
+public:
+    Stack() : topNode(nullptr) {}
+
+     {
+        Node* newNode = new Node{value, topNode};
+        topNode = newNode;
+    }
+
+  
+    char pop() {
+        if (isEmpty()) {
+            std::cerr << "Stack Underflow! Cannot pop from an empty stack.\n";
+            return '\0'; 
+        }
+        Node* temp = topNode;
+        char poppedValue = temp->data;
+        topNode = topNode->next;
+        delete temp;
+        return poppedValue;
+    }
+
+ 
+        return topNode == nullptr;
+    }
+
+  
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main() {
+    Stack stack;
+    std::string input, reversed;
+
+    std::cout << "Enter a string: ";
+    std::getline(std::cin, input);
+
+   
+    for (char ch : input) {
+        stack.push(ch);
+    }
+
+ 
+    while (!stack.isEmpty()) {
+        char ch = stack.pop();
+        if (ch != '\0') {
+            reversed += ch;
+        }
+    }
+
+    std::cout << "Reversed string: " << reversed << "\n";
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+struct Node {
+    char data;
+    Node* next;
+};
+
+class Stack {
+private:
+    Node* topNode;
+
+public:
+    Stack() : topNode(nullptr) {}
+
+  
+    void push(char value) {
+        Node* newNode = new Node{value, topNode};
+        topNode = newNode;
+    }
+
+    
+    char pop() {
+        if (isEmpty()) {
+            return '\0'; 
+        }
+        Node* temp = topNode;
+        char poppedValue = temp->data;
+        topNode = topNode->next;
+        delete temp;
+        return poppedValue;
+    }
+
+    
+    bool isEmpty() const {
+        return topNode == nullptr;
+    }
+
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main(int argc, char* argv[]) {
+  
+    if (argc != 2) {
+        std::cerr << "Usage: ./stack_reverse_strings_file <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    
+    std::vector<std::string> lines;
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        lines.push_back(line);
+    }
+    inputFile.close();
+
+    
+    std::ofstream outputFile(fileName);
+    if (!outputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "' for writing.\n";
+        return 1;
+    }
+
+    Stack stack;
+    std::vector<std::string> reversedLines;
+
+   
+    for (const auto& original : lines) {
+     
+        for (char ch : original) {
+            stack.push(ch);
+        }
+
+       
+        std::string reversed;
+        while (!stack.isEmpty()) {
+            char ch = stack.pop();
+            if (ch != '\0') {
+                reversed += ch;
+            }
+        }
+
+        
+        reversedLines.push_back(reversed);
+
+        
+        std::cout << reversed << "\n";
+
+       
+        outputFile << reversed << "\n";
+    }
+
+    outputFile.close();
+
+    std::cout << "\nAll strings have been reversed and written back to the file.\n";
+
+    return 0;
+}
+
+#include <iostream>
+#include <string>
+#include <stack>
+
+bool isComplete(const std::string& expr) {
+    std::stack<char> stk;
+    bool inSingleQuote = false;
+    bool inDoubleQuote = false;
+
+    for (size_t i = 0; i < expr.length(); ++i) {
+        char ch = expr[i];
+
+      
+        if (ch == '"' && !inSingleQuote) {
+            inDoubleQuote = !inDoubleQuote;
+            continue;
+        }
+        if (ch == '\'' && !inDoubleQuote) {
+            inSingleQuote = !inSingleQuote;
+            continue;
+        }
+
+       
+        if (inSingleQuote || inDoubleQuote) {
+            continue;
+        }
+
+     
+        if (ch == '(' || ch == '{' || ch == '[') {
+            stk.push(ch);
+        }
+        else if (ch == ')' || ch == '}' || ch == ']') {
+            if (stk.empty()) {
+                return false;
+            }
+            char top = stk.top();
+            stk.pop();
+            if ((ch == ')' && top != '(') ||
+                (ch == '}' && top != '{') ||
+                (ch == ']' && top != '[')) {
+                return false;
+            }
+        }
+    }
+
+  
+    return stk.empty() && !inSingleQuote && !inDoubleQuote;
+}
+
+int main() {
+    std::string input;
+
+    std::cout << "Enter a C syntax expression: ";
+    std::getline(std::cin, input);
+
+    if (isComplete(input)) {
+        std::cout << "The entered string is complete.\n";
+    } else {
+        std::cout << "The entered string is incomplete.\n";
+    }
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <stack>
+
+bool isComplete(const std::string& expr) {
+    std::stack<char> stk;
+    bool inSingleQuote = false;
+    bool inDoubleQuote = false;
+
+    for (size_t i = 0; i < expr.length(); ++i) {
+        char ch = expr[i];
+
+        
+        if (ch == '"' && !inSingleQuote) {
+            inDoubleQuote = !inDoubleQuote;
+            continue;
+        }
+        if (ch == '\'' && !inDoubleQuote) {
+            inSingleQuote = !inSingleQuote;
+            continue;
+        }
+
+       
+        if (inSingleQuote || inDoubleQuote) {
+            continue;
+        }
+
+      
+        if (ch == '(' || ch == '{' || ch == '[') {
+            stk.push(ch);
+        }
+        else if (ch == ')' || ch == '}' || ch == ']') {
+            if (stk.empty()) {
+                return false;
+            }
+            char top = stk.top();
+            stk.pop();
+            if ((ch == ')' && top != '(') ||
+                (ch == '}' && top != '{') ||
+                (ch == ']' && top != '[')) {
+                return false;
+            }
+        }
+    }
+
+    
+    return stk.empty() && !inSingleQuote && !inDoubleQuote;
+}
+
+int main(int argc, char* argv[]) {
+    
+    if (argc != 2) {
+        std::cerr << "Usage: ./c_syntax_validator_file <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    std::string line;
+    int lineNumber = 1;
+
+    
+    while (std::getline(inputFile, line)) {
+        bool complete = isComplete(line);
+        std::cout << line;
+        if (complete) {
+            std::cout << "  //string complete\n";
+        } else {
+            std::cout << "  //string incomplete\n";
+        }
+        lineNumber++;
+    }
+
+    inputFile.close();
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+struct Node {
+    std::string name;
+    Node* next;
+};
+
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() : front(nullptr), rear(nullptr) {}
+
+   
+    void enqueue(const std::string& name) {
+        Node* newNode = new Node{ name, nullptr };
+        if (rear == nullptr) {
+            front = rear = newNode;
+        }
+        else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+    }
+
+  
+    std::string dequeue() {
+        if (isEmpty()) {
+            return "Empty";
+        }
+        Node* temp = front;
+        std::string dequeuedName = temp->name;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+        return dequeuedName;
+    }
+
+   
+    bool isEmpty() const {
+        return front == nullptr;
+    }
+
+    
+    ~Queue() {
+        while (!isEmpty()) {
+            dequeue();
+        }
+    }
+};
+
+int main(int argc, char* argv[]) {
+    
+    if (argc != 2) {
+        std::cerr << "Usage: ./queue_distribution <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    Queue foodQueue, movieQueue, busQueue;
+    std::string name, queueDetail;
+
+    
+    inputFile >> name >> queueDetail;
+
+ 
+    while (inputFile >> name >> queueDetail) {
+        if (queueDetail == "F") {
+            foodQueue.enqueue(name);
+        }
+        else if (queueDetail == "M") {
+            movieQueue.enqueue(name);
+        }
+        else if (queueDetail == "B") {
+            busQueue.enqueue(name);
+        }
+        else {
+            std::cerr << "Unknown queue detail for " << name << ": " << queueDetail << "\n";
+        }
+    }
+
+    inputFile.close();
+
+ 
+    auto processQueue = [&](Queue& q, const std::string& queueName) {
+        std::cout << "\n" << queueName << " Queue:\n";
+        while (!q.isEmpty()) {
+            std::string person = q.dequeue();
+            if (person != "Empty") {
+                std::cout << person << "\n";
+            }
+        }
+    };
+
+    
+    processQueue(foodQueue, "Food");
+    processQueue(movieQueue, "Movie");
+    processQueue(busQueue, "Bus");
+
+    return 0;
+}
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() : front(nullptr), rear(nullptr) {}
+
+    
+    void enqueue(int value) {
+        Node* newNode = new Node{value, nullptr};
+        if (rear == nullptr) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+    }
+
+   
+    int dequeue() {
+        if (isEmpty()) {
+            return -1;
+        }
+        Node* temp = front;
+        int dequeuedValue = temp->data;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+        return dequeuedValue;
+    }
+
+   
+    bool isEmpty() const {
+        return front == nullptr;
+    }
+
+    
+    ~Queue() {
+        while (!isEmpty()) {
+            dequeue();
+        }
+    }
+};
+
+int main(int argc, char* argv[]) {
+  
+    if (argc != 2) {
+        std::cerr << "Usage: ./even_odd_queues <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    Queue evenQueue, oddQueue;
+    char ch;
+    int sumEven = 0, sumOdd = 0;
+
+    
+    while (inputFile >> ch) {
+        if (isdigit(ch)) {
+            int digit = ch - '0';
+            if (digit % 2 == 0) {
+                evenQueue.enqueue(digit);
+                sumEven += digit;
+            } else {
+                oddQueue.enqueue(digit);
+                sumOdd += digit;
+            }
+        }
+    }
+
+    inputFile.close();
+
+    std::cout << "Sum of even digits: " << sumEven << "\n";
+    std::cout << "Sum of odd digits: " << sumOdd << "\n";
+
+  
+    std::cout << "\nEven Queue Elements:\n";
+    while (!evenQueue.isEmpty()) {
+        int even = evenQueue.dequeue();
+        if (even != -1) {
+            std::cout << even << " ";
+        }
+    }
+
+    std::cout << "\n\nOdd Queue Elements:\n";
+    while (!oddQueue.isEmpty()) {
+        int odd = oddQueue.dequeue();
+        if (odd != -1) {
+            std::cout << odd << " ";
+        }
+    }
+
+    std::cout << "\n";
+
+    return 0;
+}
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+
+struct Node {
+    std::string name;
+    Node* next;
+};
+
+
+class Queue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() : front(nullptr), rear(nullptr) {}
+
+  
+    void enqueue(const std::string& name) {
+        Node* newNode = new Node{ name, nullptr };
+        if (rear == nullptr) {
+            front = rear = newNode;
+        }
+        else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+    }
+
+   
+    std::string dequeue() {
+        if (isEmpty()) {
+            return "Empty";
+        }
+        Node* temp = front;
+        std::string dequeuedName = temp->name;
+        front = front->next;
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+        return dequeuedName;
+    }
+
+    
+    bool isEmpty() const {
+        return front == nullptr;
+    }
+
+   
+    ~Queue() {
+        while (!isEmpty()) {
+            dequeue();
+        }
+    }
+};
+
+int main(int argc, char* argv[]) {
+   
+    if (argc != 2) {
+        std::cerr << "Usage: ./queue_distribution <filename>\n";
+        return 1;
+    }
+
+    std::string fileName = argv[1];
+    std::ifstream inputFile(fileName);
+    if (!inputFile.is_open()) {
+        std::cerr << "Error: Could not open '" << fileName << "'.\n";
+        return 1;
+    }
+
+    Queue foodQueue, movieQueue, busQueue;
+    std::string name, queueDetail;
+
+   
+    inputFile >> name >> queueDetail;
+
+   
+    while (inputFile >> name >> queueDetail) {
+        if (queueDetail == "F") {
+            foodQueue.enqueue(name);
+        }
+        else if (queueDetail == "M") {
+            movieQueue.enqueue(name);
+        }
+        else if (queueDetail == "B") {
+            busQueue.enqueue(name);
+        }
+        else {
+            std::cerr << "Unknown queue detail for " << name << ": " << queueDetail << "\n";
+        }
+    }
+
+    inputFile.close();
+
+  
+    auto processQueue = [&](Queue& q, const std::string& queueName) {
+        std::cout << "\n" << queueName << " Queue:\n";
+        while (!q.isEmpty()) {
+            std::string person = q.dequeue();
+            if (person != "Empty") {
+                std::cout << person << "\n";
+            }
+        }
+    };
+
+   
+    processQueue(foodQueue, "Food");
+    processQueue(movieQueue, "Movie");
+    processQueue(busQueue, "Bus");
+
+    return 0;
+}

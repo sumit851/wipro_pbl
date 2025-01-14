@@ -1,0 +1,147 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+struct Node {
+    string data;
+    Node* next;
+};
+
+class Stack {
+private:
+    Node* top;
+    
+public:
+    
+    Stack() { 
+        top = nullptr; 
+    }
+     Stack() : top(nullptr) {}
+    void push(const string& data);
+    string pop();
+    void display() const;
+    bool isEmpty() const;
+    ~Stack();
+   {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = top;
+        top = newNode;
+    }
+    
+   
+    string pop() {
+        if (isEmpty()) {
+            cout << "Stack is empty!" << endl;
+            return "";
+        }
+        Node* temp = top;
+        string poppedValue = top->data;
+        top = top->next;
+        delete temp;
+        return poppedValue;
+    }
+    
+   
+    bool isEmpty() {
+        return top == nullptr;
+    }
+    
+  
+    void display() {
+        if (isEmpty()) {
+            cout << "Stack is empty!" << endl;
+            return;
+        }
+        Node* temp = top;
+        while (temp != nullptr) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+    
+    
+    ~Stack() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main() {
+    Stack employeeStack;
+    
+ 
+    employeeStack.push("Employee1");
+    employeeStack.push("Employee2");
+    employeeStack.push("Employee3");
+    
+    cout << "Stack after pushing employees:" << endl;
+    employeeStack.display();
+    
+    cout << "Popped employee: " << employeeStack.pop() << endl;
+    
+    cout << "Stack after popping:" << endl;
+    employeeStack.display();
+    
+    return 0;
+}
+
+#include <iostream>
+#include <stack>
+#include <fstream>
+#include <string>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+void processFile(string filename) {
+    stack<int> mainStack;
+    stack<int> tempStack;
+    
+  
+    ifstream file(filename);
+    int num;
+    while (file >> num) {
+        mainStack.push(num);
+    }
+    file.close();
+    
+    
+    while (!mainStack.empty()) {
+        int current = mainStack.top();
+        mainStack.pop();
+        
+    
+        while (!tempStack.empty() && tempStack.top() > current) {
+            cout << "Elements between " << current << " and " << tempStack.top() << " -> None" << endl;
+            tempStack.pop();
+        }
+        
+        if (!tempStack.empty()) {
+            cout << "Elements between " << current << " and " << tempStack.top() << " -> ";
+            
+            stack<int> printStack = mainStack;
+            while (!printStack.empty() && printStack.top() < tempStack.top()) {
+                cout << printStack.top() << " ";
+                printStack.pop();
+            }
+            cout << endl;
+        }
+        
+        tempStack.push(current);
+    }
+}
+
+int main() {
+    string filename = "input.txt";
+    processFile(filename);
+    return 0;
+}
