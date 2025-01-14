@@ -1,0 +1,39 @@
+#include <iostream>
+
+int main() {
+    int arr[] = {10, 20, 30, 40, 50};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+  
+    std::cout << "Elements using traditional for loop:\n";
+    for(int i = 0; i < size; ++i) {
+        std::cout << arr[i] << " ";
+    }
+
+    std::cout << "\n";
+
+   
+    std::cout << "Elements using range-based for loop:\n";
+    for(auto element : arr) {
+        std::cout << element << " ";
+    }
+
+    std::cout << std::endl;
+    return 0;
+}
+
+#include <iostream>
+
+
+constexpr int square(int x) {
+    return x * x;
+}
+
+int main() {
+    const int num = 5; 
+    constexpr int result = square(num); 
+
+    std::cout << "Square of " << num << " is " << result << std::endl;
+
+    return 0;
+}
