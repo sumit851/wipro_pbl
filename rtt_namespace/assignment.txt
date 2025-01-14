@@ -1,0 +1,131 @@
+#include <iostream>
+#include <typeinfo>
+using namespace std;
+
+// Base class
+class Country {
+public:
+    void displayCountry() {
+        cout << "Country: ExampleLand" << endl;
+    }
+};
+
+// Intermediate class
+class State : public Country {
+public:
+    void displayState() {
+        cout << "State: ExampleState" << endl;
+    }
+};
+
+// Intermediate class
+class District : public State {
+public:
+    void displayDistrict() {
+        cout << "District: ExampleDistrict" << endl;
+    }
+};
+
+// Derived class
+class My_Home : public District {
+public:
+    void displayHome() {
+        cout << "Home: My Home" << endl;
+    }
+};
+
+// Another branch of hierarchy
+class Union_Territories : public Country {
+public:
+    void displayUT() {
+        cout << "Union Territory: ExampleUT" << endl;
+    }
+};
+
+// Derived class from Union_Territories
+class Friends_Home : public Union_Territories {
+public:
+    void displayFriendsHome() {
+        cout << "Friends Home: My Friend's Home" << endl;
+    }
+};
+
+int main() {
+    // Create an object of District
+    District districtObj;
+
+    // Accessing members using pointers
+    Country* countryPtr = &districtObj;
+    State* statePtr = &districtObj;
+    District* districtPtr = &districtObj;
+
+    // Accessing public members
+    countryPtr->displayCountry();
+    statePtr->displayState();
+    districtPtr->displayDistrict();
+
+    // Accessing My_Home using casting
+    My_Home myHomeObj;
+    District* myHomeAsDistrict = static_cast<District*>(&myHomeObj);
+    myHomeAsDistrict->displayDistrict();
+    myHomeAsDistrict->displayHome(); // This will not work without casting
+
+    // Using dynamic_cast
+    My_Home* myHomeDynamic = dynamic_cast<My_Home*>(myHomeAsDistrict);
+    if (myHomeDynamic) {
+        myHomeDynamic->displayHome();
+        cout << "Type of object pointed by myHomeDynamic: " << typeid(myHomeDynamic).name() << endl;
+    }
+
+    // Part 3: Accessing members from another branch
+    Friends_Home friendsHomeObj;
+    Union_Territories* utPtr = &friendsHomeObj;
+    utPtr->displayUT();
+
+    // Attempting to access Friends_Home from Union_Territories
+    Friends_Home* friendsHomeCast = dynamic_cast<Friends_Home*>(utPtr);
+    if (friendsHomeCast) {
+        friendsHomeCast->displayFriendsHome();
+    }
+
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+// Namespace 1
+namespace Namespace1 {
+    int commonVar = 10;
+    int distinctVar1 = 20;
+}
+
+// Namespace 2
+namespace Namespace2 {
+    int commonVar = 30;
+    int distinctVar2 = 40;
+}
+
+int main() {
+    // Assigning values to variables in namespaces
+    Namespace1::commonVar = 15;
+    Namespace1::distinctVar1 = 25;
+    Namespace2::commonVar = 35;
+    Namespace2::distinctVar2 = 45;
+
+    // Printing values from both namespaces
+    cout << "Namespace1 - commonVar: " << Namespace1::commonVar << endl;
+    cout << "Namespace1 - distinctVar1: " << Namespace1::distinctVar1 << endl;
+    cout << "Namespace2 - commonVar: " << Namespace2::commonVar << endl;
+    cout << "Namespace2 - distinctVar2: " << Namespace2::distinctVar2 << endl;
+
+    // Local namespace inside a function
+    {
+        namespace LocalNamespace {
+            int localVar = 50;
+        }
+        cout << "LocalNamespace - localVar: " << LocalNamespace::localVar << endl;
+    }
+
+    return 0;
+}
